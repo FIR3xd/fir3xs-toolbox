@@ -1,5 +1,7 @@
 # EV Torque Calculator Platinum ⚡️
 
+### version 1.0
+
 Welcome to the **EV Torque Calculator Platinum** — your go-to web tool for visualizing electric motor torque curves with precision, presets, and customizability. Perfect for nerds, EV enthusiasts, and anyone who loves that sweet torque graph action.
 
 ---
