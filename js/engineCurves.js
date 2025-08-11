@@ -227,7 +227,6 @@ export const motorCurves = {
         return torque;
     },
 
-
 };
 
 // Export a helper function to get the torque curve by type

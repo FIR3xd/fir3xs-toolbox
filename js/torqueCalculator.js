@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const falloffStartValue = document.getElementById("falloffStartValue");
     const falloffSteepnessValue = document.getElementById("falloffSteepnessValue");
 
+    // Precision slider and value display
+    const precisionSlider = document.getElementById("precisionSlider");
+    const precisionValue = document.getElementById("precisionValue");
+
     // Update slider labels on input
     const updateSliderLabels = () => {
         rampUpValue.textContent = rampUpSlider.value + "%";
@@ -36,6 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Attach slider input listeners for live label update
     [rampUpSlider, plateauSlider, falloffStartSlider, falloffSteepnessSlider].forEach(slider => {
         slider.addEventListener("input", updateSliderLabels);
+    });
+
+    // Precision slider live text update
+    precisionValue.textContent = precisionSlider.value;
+    precisionSlider.addEventListener("input", () => {
+        precisionValue.textContent = precisionSlider.value;
     });
 
     // Toggle handler: show/hide sections
@@ -90,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const engineType = form.engineType.value;
         const maxTorque = parseFloat(form.maxTorque.value);
         const maxPowerHp = parseFloat(form.maxPower.value);
-        const precision = parseInt(document.getElementById("precisionSlider").value, 10);
+        const precision = parseInt(precisionSlider.value, 10);
         const maxRpm = parseInt(form.maxRpm.value, 10);
         const exportTxt = form.exportTxt.checked;
 

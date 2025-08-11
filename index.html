@@ -82,18 +82,21 @@
                     <div><small><span id="falloffSteepnessValue">5</span></small></div>
                 </div>
 
+                <!-- Max Torque -->
                 <div class="mb-3 mt-4">
                     <label for="maxTorque" class="form-label">Max Torque (Nm)</label>
                     <input type="number" step="0.1" min="0" class="form-control" id="maxTorque" value="300" required/>
                     <div class="invalid-feedback">Please enter max torque (positive number).</div>
                 </div>
 
+                <!-- Max Power -->
                 <div class="mb-3">
                     <label for="maxPower" class="form-label">Max Power (hp)</label>
                     <input type="number" step="0.1" min="0" class="form-control" id="maxPower" value="200" required/>
                     <div class="invalid-feedback">Please enter max power (positive number).</div>
                 </div>
 
+                <!-- Torque Precision -->
                 <div class="mb-3">
                     <label for="precisionSlider" class="form-label">Torque Precision (RPM step)</label>
                     <input
@@ -108,12 +111,14 @@
                     <div>Current Precision: <span id="precisionValue">500</span> RPM</div>
                 </div>
 
+                <!-- Max RPM -->
                 <div class="mb-3">
                     <label for="maxRpm" class="form-label">Max RPM</label>
                     <input type="number" step="1" min="1" class="form-control" id="maxRpm" value="16000" required/>
                     <div class="invalid-feedback">Please enter max RPM (positive integer).</div>
                 </div>
 
+                <!-- export to .txt -->
                 <div class="form-check form-switch mb-4">
                     <input class="form-check-input" type="checkbox" id="exportTxt"/>
                     <label class="form-check-label" for="exportTxt">Export output to
