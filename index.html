@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>EV Torque Calculator Platinum</title>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <script src="js/torqueCalculator.js"></script>
+</head>
+<body>
+<header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom p-3">
+    <a href="index.html"
+       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="media/evtc-logopng.png" alt="Logo" width="64" height="64" class="me-2"/>
+        <span class="fs-4">EV Torque Calculator Platinum</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="nav-link">Future Updates</a>
+        </li>
+    </ul>
+</header>
+
+<div class="container">
+    <div class="row g-4">
+        <!-- Left Column: Inputs -->
+        <div class="col-md-6">
+            <form id="evForm" class="needs-validation" novalidate>
+                <h4 class="mb-3">EV Torque Calculator Platinum</h4>
+
+                <div class="mb-3">
+                    <label for="engineType" class="form-label">Electric Motor Type</label>
+                    <select id="engineType" class="form-select" required>
+                        <option value="" disabled selected>Select electric motor type</option>
+                        <option value="raw">Raw Output (flat max torque, then power-limited falloff)</option>
+                        <option value="fastRamp">Fast Ramp-up, Gentle Fall-off</option>
+                        <option value="slowRampStrongFalloff">Slow Ramp-up, Strong Fall-off</option>
+                        <option value="flatTop">Flat Torque Top</option>
+                        <option value="teslaModelS">Tesla Model S Inspired</option>
+                        <option value="nissanLeaf">Nissan Leaf Inspired</option>
+                    </select>
+
+                    <div class="invalid-feedback">Please select an electric motor type.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="maxTorque" class="form-label">Max Torque (Nm)</label>
+                    <input type="number" step="0.1" min="0" class="form-control" id="maxTorque" value="300" required />
+                    <div class="invalid-feedback">Please enter max torque (positive number).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="maxPower" class="form-label">Max Power (hp)</label>
+                    <input type="number" step="0.1" min="0" class="form-control" id="maxPower" value="200" required />
+                    <div class="invalid-feedback">Please enter max power (positive number).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="precision" class="form-label">Torque Precision (1-5000)</label>
+                    <input type="number" step="1" min="1" max="5000" class="form-control" id="precision" value="500" required />
+                    <div class="invalid-feedback">Please enter a precision between 1 and 5000.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="maxRpm" class="form-label">Max RPM</label>
+                    <input type="number" step="1" min="1" class="form-control" id="maxRpm" value="16000" required />
+                    <div class="invalid-feedback">Please enter max RPM (positive integer).</div>
+                </div>
+
+                <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" id="exportTxt" />
+                    <label class="form-check-label" for="exportTxt">Export output to <code>torque_output.txt</code></label>
+                </div>
+
+                <button class="btn btn-primary w-100" type="submit">Calculate Torque Table</button>
+            </form>
+        </div>
+
+        <!-- Right Column: Output -->
+        <div class="col-md-6">
+            <h4>Output</h4>
+            <pre id="output" aria-live="polite" aria-atomic="true" class="output-area" style="background:#121212; color:#eee; padding:1rem; border-radius:.5rem; max-height: 70vh; overflow-y:auto; font-family: monospace;"></pre>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/bootstrap.js"></script>
+<script src="js/your-ev-torque-calculator.js"></script>
+</body>
+</html>
