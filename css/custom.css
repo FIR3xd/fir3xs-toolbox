@@ -1,0 +1,6 @@
+#torqueChart {
+    width: 100% !important;
+    height: 300px !important;   /* fixed height */
+    max-height: 300px;
+    display: block;
+}

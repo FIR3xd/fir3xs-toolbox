@@ -1,4 +1,5 @@
 import { getTorqueAtRPM } from './engineCurves.js';
+import { renderTorqueGraph } from './graphRenderer.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("evForm");
@@ -14,11 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
         form.classList.remove("was-validated");
 
         const engineType = form.engineType.value;
-        if (!engineType) {
-            output.textContent = "Please select a valid electric motor type.";
-            return;
-        }
-
         const maxTorque = parseFloat(form.maxTorque.value);
         const maxPowerHp = parseFloat(form.maxPower.value);
         const precision = parseInt(form.precision.value, 10);
@@ -26,11 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const exportTxt = form.exportTxt.checked;
 
         let lines = ['["rpm", "torque"]'];
+        const rpmValues = [];
+        const torqueValues = [];
 
         for (let rpm = 0; rpm <= maxRpm; rpm += precision) {
             let torque = getTorqueAtRPM(engineType, rpm, maxTorque, maxPowerHp, maxRpm);
             if (torque > maxTorque) torque = maxTorque;
             if (torque < 0) torque = 0;
+
+            rpmValues.push(rpm);
+            torqueValues.push(torque);
             lines.push(`[${rpm}, ${torque.toFixed(4)}]`);
         }
 
@@ -38,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
             let torque = getTorqueAtRPM(engineType, maxRpm, maxTorque, maxPowerHp, maxRpm);
             if (torque > maxTorque) torque = maxTorque;
             if (torque < 0) torque = 0;
+
+            rpmValues.push(maxRpm);
+            torqueValues.push(torque);
             lines.push(`[${maxRpm}, ${torque.toFixed(4)}]`);
         }
 
@@ -54,6 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        try {
+            renderTorqueGraph('torqueChart', rpmValues, torqueValues, maxRpm, maxTorque);
+
+        } catch (error) {
+            console.error("Failed to render torque graph:", error);
         }
     });
 });
