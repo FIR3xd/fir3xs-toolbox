@@ -5,6 +5,77 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("evForm");
     const output = document.getElementById("output");
 
+    // Elements for toggle + sliders
+    const customToggle = document.getElementById("customCurveToggle");
+    const presetSection = document.getElementById("presetSelectorSection");
+    const customSlidersSection = document.getElementById("customSlidersSection");
+
+    // Slider elements
+    const rampUpSlider = document.getElementById("rampUpSlider");
+    const plateauSlider = document.getElementById("plateauSlider");
+    const falloffStartSlider = document.getElementById("falloffStartSlider");
+    const falloffSteepnessSlider = document.getElementById("falloffSteepnessSlider");
+
+    // Slider value display spans
+    const rampUpValue = document.getElementById("rampUpValue");
+    const plateauValue = document.getElementById("plateauValue");
+    const falloffStartValue = document.getElementById("falloffStartValue");
+    const falloffSteepnessValue = document.getElementById("falloffSteepnessValue");
+
+    // Update slider labels on input
+    const updateSliderLabels = () => {
+        rampUpValue.textContent = rampUpSlider.value + "%";
+        plateauValue.textContent = plateauSlider.value + "%";
+        falloffStartValue.textContent = falloffStartSlider.value + "%";
+        falloffSteepnessValue.textContent = falloffSteepnessSlider.value;
+    };
+
+    // Initial label update
+    updateSliderLabels();
+
+    // Attach slider input listeners for live label update
+    [rampUpSlider, plateauSlider, falloffStartSlider, falloffSteepnessSlider].forEach(slider => {
+        slider.addEventListener("input", updateSliderLabels);
+    });
+
+    // Toggle handler: show/hide sections
+    customToggle.addEventListener("change", () => {
+        if (customToggle.checked) {
+            customSlidersSection.style.display = "block";
+            presetSection.style.display = "none";
+            form.engineType.removeAttribute("required");
+        } else {
+            customSlidersSection.style.display = "none";
+            presetSection.style.display = "block";
+            form.engineType.setAttribute("required", "true");
+        }
+    });
+
+    // Custom torque curve function based on sliders
+    function customTorqueCurve(rpm, maxTorque, maxPowerHp, maxRpm) {
+        const rampUpEnd = (rampUpSlider.value / 100) * maxRpm;
+        const plateauEnd = ((rampUpSlider.value / 100) + (plateauSlider.value / 100)) * maxRpm;
+        const fallOffStart = (falloffStartSlider.value / 100) * maxRpm;
+        const fallOffSteepness = falloffSteepnessSlider.value;
+
+        if (rpm === 0) return 0;
+
+        if (rpm < rampUpEnd) {
+            return (rpm / rampUpEnd) * maxTorque;
+        }
+        if (rpm >= rampUpEnd && rpm <= plateauEnd) {
+            return maxTorque;
+        }
+        if (rpm > plateauEnd && rpm <= fallOffStart) {
+            return maxTorque;
+        }
+        if (rpm > fallOffStart && rpm <= maxRpm) {
+            const normalizedRPM = (rpm - fallOffStart) / (maxRpm - fallOffStart);
+            return maxTorque * Math.pow(1 - normalizedRPM, fallOffSteepness);
+        }
+        return 0;
+    }
+
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -14,10 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         form.classList.remove("was-validated");
 
+        const useCustomCurve = customToggle.checked;
+
         const engineType = form.engineType.value;
         const maxTorque = parseFloat(form.maxTorque.value);
         const maxPowerHp = parseFloat(form.maxPower.value);
-        const precision = parseInt(form.precision.value, 10);
+        const precision = parseInt(document.getElementById("precisionSlider").value, 10);
         const maxRpm = parseInt(form.maxRpm.value, 10);
         const exportTxt = form.exportTxt.checked;
 
@@ -26,7 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const torqueValues = [];
 
         for (let rpm = 0; rpm <= maxRpm; rpm += precision) {
-            let torque = getTorqueAtRPM(engineType, rpm, maxTorque, maxPowerHp, maxRpm);
+            let torque;
+            if (useCustomCurve) {
+                torque = customTorqueCurve(rpm, maxTorque, maxPowerHp, maxRpm);
+            } else {
+                torque = getTorqueAtRPM(engineType, rpm, maxTorque, maxPowerHp, maxRpm);
+            }
+
             if (torque > maxTorque) torque = maxTorque;
             if (torque < 0) torque = 0;
 
@@ -36,7 +115,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (maxRpm % precision !== 0) {
-            let torque = getTorqueAtRPM(engineType, maxRpm, maxTorque, maxPowerHp, maxRpm);
+            let torque;
+            if (useCustomCurve) {
+                torque = customTorqueCurve(maxRpm, maxTorque, maxPowerHp, maxRpm);
+            } else {
+                torque = getTorqueAtRPM(engineType, maxRpm, maxTorque, maxPowerHp, maxRpm);
+            }
+
             if (torque > maxTorque) torque = maxTorque;
             if (torque < 0) torque = 0;
 
@@ -62,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             renderTorqueGraph('torqueChart', rpmValues, torqueValues, maxRpm, maxTorque);
-
         } catch (error) {
             console.error("Failed to render torque graph:", error);
         }

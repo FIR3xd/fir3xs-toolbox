@@ -8,7 +8,6 @@
     <script type="module" src="js/torqueCalculator.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/custom.css">
-
 </head>
 <body>
 <header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom p-3">
@@ -29,9 +28,16 @@
         <!-- Left Column: Inputs -->
         <div class="col-md-6">
             <form id="evForm" class="needs-validation" novalidate>
-                <h4 class="mb-3">EV Torque Calculator Platinum</h4>
+                <h4 class="mb-3">EV Torque Calculator</h4>
 
-                <div class="mb-3">
+                <!-- Custom Curve Toggle -->
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="customCurveToggle" />
+                    <label class="form-check-label" for="customCurveToggle">Use Custom Curve Sliders</label>
+                </div>
+
+                <!-- Preset Selector -->
+                <div id="presetSelectorSection" class="mb-3">
                     <label for="engineType" class="form-label">Electric Motor Type</label>
                     <select id="engineType" class="form-select" required>
                         <option value="" disabled selected>Select electric motor type</option>
@@ -54,11 +60,29 @@
                         <option value="brokenToaster">Broken Toaster</option>
                         <option value="jesusTookTheMotor">Jesus Took The Motor</option>
                     </select>
-
                     <div class="invalid-feedback">Please select an electric motor type.</div>
                 </div>
 
-                <div class="mb-3">
+                <!-- Custom Sliders (hidden by default) -->
+                <div id="customSlidersSection" style="display:none;">
+                    <label class="form-label mt-3">Ramp-up Duration (% of max RPM)</label>
+                    <input type="range" min="0" max="100" value="20" id="rampUpSlider" class="form-range" />
+                    <div><small><span id="rampUpValue">20%</span></small></div>
+
+                    <label class="form-label mt-3">Plateau Length (% of max RPM)</label>
+                    <input type="range" min="0" max="100" value="50" id="plateauSlider" class="form-range" />
+                    <div><small><span id="plateauValue">50%</span></small></div>
+
+                    <label class="form-label mt-3">Fall-off Start (% of max RPM)</label>
+                    <input type="range" min="0" max="100" value="70" id="falloffStartSlider" class="form-range" />
+                    <div><small><span id="falloffStartValue">70%</span></small></div>
+
+                    <label class="form-label mt-3">Fall-off Steepness (1-10)</label>
+                    <input type="range" min="1" max="10" value="5" id="falloffSteepnessSlider" class="form-range" />
+                    <div><small><span id="falloffSteepnessValue">5</span></small></div>
+                </div>
+
+                <div class="mb-3 mt-4">
                     <label for="maxTorque" class="form-label">Max Torque (Nm)</label>
                     <input type="number" step="0.1" min="0" class="form-control" id="maxTorque" value="300" required/>
                     <div class="invalid-feedback">Please enter max torque (positive number).</div>
@@ -71,10 +95,17 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="precision" class="form-label">Torque Precision (1-5000)</label>
-                    <input type="number" step="1" min="1" max="5000" class="form-control" id="precision" value="500"
-                           required/>
-                    <div class="invalid-feedback">Please enter a precision between 1 and 5000.</div>
+                    <label for="precisionSlider" class="form-label">Torque Precision (RPM step)</label>
+                    <input
+                            type="range"
+                            class="form-range"
+                            min="10"
+                            max="5000"
+                            step="10"
+                            id="precisionSlider"
+                            value="500"
+                    />
+                    <div>Current Precision: <span id="precisionValue">500</span> RPM</div>
                 </div>
 
                 <div class="mb-3">
@@ -102,7 +133,5 @@
     </div>
     <canvas id="torqueChart" style="max-width: 100%; height: 300px;"></canvas>
 </div>
-
-
 </body>
 </html>
