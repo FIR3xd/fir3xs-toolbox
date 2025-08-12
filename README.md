@@ -15,4 +15,4 @@ While the toolbox will eventually feature multiple tools, the first one availabl
 - ¯\_(ツ)_/¯
 ---
 ## 📜 License
-coming soon.
+This project is licensed under the MIT License.
