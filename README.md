@@ -14,5 +14,9 @@ While the toolbox will eventually feature multiple tools, the first one availabl
 ### Planned Tools:
 - ¯\_(ツ)_/¯
 ---
+## Special Thanks to:
+- [Chart.js](https://www.chartjs.org) for the amazing and simple chart integration
+- [FontAwesome](https://fontawesome.com) for sleek icons
+---
 ## 📜 License
 This project is licensed under the MIT License.
