@@ -1,9 +1,10 @@
 # FIR3x's Toolbox
 
-FIR3x's Toolbox is a growing collection of utilities designed to make everyday tasks quicker and easier.  
-While the toolbox will eventually feature multiple tools, the first one available is a **simple calculator** for quick arithmetic operations.
+FIR3x's Toolbox is a growing collection of utilities designed to make BeamNG modding tasks quicker and easier.  
+While the toolbox will eventually feature multiple tools, the first one available is a **simple calculator** for quick EV torque curve generation.
 
 ---
+## [Host Website](https://toolbox.galactis-group.com)
 
 ## ✨ Features
 
