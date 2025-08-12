@@ -142,6 +142,30 @@ export const motorCurves = {
         return 0;
     },
 
+    vwIDR: (rpm, maxTorque = 650, maxPowerHp = 670, maxRpm = 10000) => {
+        const flatEnd = 3000; // stays flat early, short gearing
+        if (rpm === 0) return maxTorque;
+        if (rpm <= flatEnd) {
+            return maxTorque;
+        }
+        if (rpm > flatEnd && rpm <= maxRpm) {
+            return maxTorque * (1 - (rpm - flatEnd) / (maxRpm - flatEnd));
+        }
+        return 0;
+    },
+
+    teslaModel3: (rpm, maxTorque = 639, maxPowerHp = 450, maxRpm = 16000) => {
+        const flatEnd = 5000; // holds torque longer than ID-R
+        if (rpm === 0) return maxTorque;
+        if (rpm <= flatEnd) {
+            return maxTorque;
+        }
+        if (rpm > flatEnd && rpm <= maxRpm) {
+            return maxTorque * (1 - (rpm - flatEnd) / (maxRpm - flatEnd));
+        }
+        return 0;
+    },
+
     //Shitpost-------------------------------------------------------------------------
 
     eSkateboardSlither: (rpm, maxTorque, maxPowerHp, maxRpm) => {
