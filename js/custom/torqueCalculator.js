@@ -1,5 +1,5 @@
-import { getTorqueAtRPM } from './engineCurves.js';
-import { renderTorqueGraph } from './graphRenderer.js';
+import {getTorqueAtRPM} from './engineCurves.js';
+import {renderTorqueGraph} from './graphRenderer.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("evForm");
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const maxRpm = parseInt(form.maxRpm.value, 10);
         const exportTxt = form.exportTxt.checked;
 
-        let lines = ['["rpm", "torque"]'];
+        let lines = ['["rpm", "torque"],'];
         const rpmValues = [];
         const torqueValues = [];
 
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             rpmValues.push(rpm);
             torqueValues.push(torque);
-            lines.push(`[${rpm}, ${torque.toFixed(4)}]`);
+            lines.push(`[${rpm}, ${torque.toFixed(4)}],`);
         }
 
         if (maxRpm % precision !== 0) {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         output.textContent = torqueTable;
 
         if (exportTxt) {
-            const blob = new Blob([torqueTable], { type: "text/plain" });
+            const blob = new Blob([torqueTable], {type: "text/plain"});
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
@@ -154,6 +154,34 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
+
+        // JSON export
+        if (form.exportJson && form.exportJson.checked) {
+            const torqueArray = [["rpm", "torque"]];
+            for (let i = 0; i < rpmValues.length; i++) {
+                torqueArray.push([
+                    rpmValues[i],
+                    parseFloat(torqueValues[i].toFixed(4))
+                ]);
+            }
+
+            const jsonData = {
+                mainEngine: {
+                    torque: torqueArray
+                }
+            };
+
+            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 4)], {type: "application/json"});
+            const jsonUrl = URL.createObjectURL(jsonBlob);
+            const jsonLink = document.createElement("a");
+            jsonLink.href = jsonUrl;
+            jsonLink.download = "torque_curve.json";
+            document.body.appendChild(jsonLink);
+            jsonLink.click();
+            document.body.removeChild(jsonLink);
+            URL.revokeObjectURL(jsonUrl);
+        }
+
 
         try {
             renderTorqueGraph('torqueChart', rpmValues, torqueValues, maxRpm, maxTorque);
