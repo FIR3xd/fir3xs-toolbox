@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>FuelBoard</title>
+    <link rel="icon" type="image/x-icon" href="media/favicon.ico">
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="js/custom/fuelBoard.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="css/custom.css">
+
+</head>
+<body>
+<header class="d-flex flex-wrap justify-content-center align-items-center py-3 mb-4 border-bottom p-3">
+    <a href="index.html"
+       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="media/fuelBoard-logo.png" alt="Logo" width="64" height="64" class="me-2"/>
+        <span class="fs-4">BeamNG/Automation Fuel Board</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a href="index.html" class="nav-link active bg-danger"><i class="fa-solid fa-xmark"></i></a>
+        </li>
+    </ul>
+</header>
+
+
+<div class="container">
+    <!-- ICE Table Card -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <b>ICE Fuel Board</b>
+        </div>
+        <div class="card-body p-0">
+            <div id="table1_div"></div>
+        </div>
+    </div>
+
+    <!-- EV Table Card -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <b>EV Board</b>
+        </div>
+        <div class="card-body p-0">
+            <div id="table2_div"></div>
+        </div>
+    </div>
+</div>
+<footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="index.html" class="nav-link px-2 text-body-secondary">Home</a></li>
+    </ul>
+    <p class="text-center text-body-secondary">© 2025 FIR3xd</p></footer>
+
+</body>
+</html>

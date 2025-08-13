@@ -4,3 +4,49 @@
     max-height: 300px;
     display: block;
 }
+
+
+
+/* Table wrapper - let Bootstrap’s page/card background show through */
+.google-visualization-table-table {
+    background-color: transparent !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Table header row - flat, no gradient */
+.google-visualization-table-tr-head,
+.google-visualization-table-th {
+    background-color: var(--bs-body-bg) !important; /* flat color */
+    background-image: none !important;               /* remove Google Charts gradient */
+    color: var(--bs-body-color) !important;          /* text color */
+    font-weight: bold !important;
+    padding: 0.75rem !important;
+    border: 0px solid var(--bs-border-color, #dee2e6) !important;
+}
+
+/* Table cells - inherit parent background */
+.google-visualization-table-td {
+    background-color: inherit !important;
+    color: inherit !important;
+    padding: 0.75rem !important;
+    border: 0px solid var(--bs-border-color, #dee2e6) !important;
+}
+
+/* Zebra striping using Bootstrap variables */
+.google-visualization-table-tr-even {
+    background-color: rgba(var(--bs-body-color-rgb), 0.02) !important;
+}
+
+.google-visualization-table-tr-odd {
+    background-color: transparent !important;
+}
+
+/* Hover effect */
+.google-visualization-table-tr-over {
+    background-color: rgba(var(--bs-body-color-rgb), 0.05) !important;
+}
+
+
